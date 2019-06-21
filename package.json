@@ -1,0 +1,20 @@
+{
+  "name": "node_data_APIs-JS",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Septian Adi Wijaya",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nedb": "^1.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
