@@ -4,7 +4,7 @@ This is a working document outlining future plans for a new Coding Train playlis
 
 ## Description
 
-This course will introduce "full stack" development adding server-side programming with Node.js for data persistence & API authentication. This course is from [The Coding Train's Youtube series](https://www.youtube.com/user/shiffman) and the project reference to built is from [here](https://github.com/joeyklee/data-selfie-app) project tutorial from [@joeyklee](https://github.com/joeyklee).
+This course will introduce "full stack" development adding server-side programming with Node.js for data persistence & API authentication. This course is from [The Coding Train's Youtube series](https://www.youtube.com/user/shiffman) and the project reference to built is from [here](https://github.com/joeyklee/data-selfie-app) project tutorial from [@joeyklee](https://github.com/joeyklee) also [from here](https://github.com/CodingTrain/Intro-to-Data-APIs-JS).
 
 ### Objectives
 1. Learn basics of server-side programming with Node (and express framework to used)
