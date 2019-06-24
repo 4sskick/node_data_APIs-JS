@@ -8,48 +8,54 @@
 </head>
 
 <body>
-    <script>
-        if ('geolocation' in navigator) {
-            console.log(`geolocation is available`);
-
-            navigator.geolocation.getCurrentPosition(async position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                // const lat = null;
-                // const lon = null;
-
-                document.getElementById('latitude').textContent = lat;
-                document.getElementById('longitude').textContent = lon;
-
-
-                //starting to sent back to the server to hit API
-                let data = { lat, lon };
-                let options = {
-                    method: 'POST',
-                    headers:{
-                        'Content-type':'application/json'
-                    },
-                    body: JSON.stringify(data)
-                }
-
-                //get the data sent by server as a Flag
-                const requestData = await fetch('/api',options);
-                const dataResponse = await requestData.json();//wrapped into JSON
-
-                console.log(dataResponse);
-            });
-        } else {
-            console.log(`geolocation not available`);
-        }
-    </script>
     <h1>Your Location</h1>
     <div id="your_location">
         <p>
             Latitude: <span id="latitude"></span>&deg;<br>
             Longitude: <span id="longitude"></span>&deg;
         </p>
-    </div>
 
+        <input type="text" id="your_mood" value="" />
+        <button id="submit_mood">Submit</button>
+    </div>
+    <script>
+        let lat, lon;
+        const buttonMood = document.getElementById('submit_mood');
+        
+        buttonMood.addEventListener('click', async event => {
+            const moodValue = document.getElementById('your_mood').value;
+
+            //starting to sent back to the server to hit API
+            let data = { lat, lon, moodValue };
+            let options = {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+
+            //get the data sent by server as a Flag
+            const requestData = await fetch('/api', options);
+            const dataResponse = await requestData.json();//wrapped into JSON
+
+            console.log(dataResponse);
+        });
+
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(async position => {
+                lat = position.coords.latitude;
+                lon = position.coords.longitude;
+                // lat = null;
+                // lon = null;
+
+                document.getElementById('latitude').textContent = lat;
+                document.getElementById('longitude').textContent = lon;
+            });
+        } else {
+            console.log(`geolocation not available`);
+        }
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Your Location</h1>
+    <div id="your_location">
+        <p>
+            Latitude: <span id="latitude"></span>&deg;<br>
+            Longitude: <span id="longitude"></span>&deg;
+        </p>
+
+        <input type="text" id="your_mood" value="" />
+        <button id="submit_mood">Submit</button>
+    </div>
+    <script>
+        getData();
+        async function getData() {
+            const requestData = await fetch('/api');//get method request
+            const dataResponse = await requestData.json();
+
+            console.log(dataResponse);
+        }
+    </script>
+</body>
+
+</html>
