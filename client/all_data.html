@@ -9,20 +9,27 @@
 
 <body>
     <h1>Your Location</h1>
-    <div id="your_location">
-        <p>
-            Latitude: <span id="latitude"></span>&deg;<br>
-            Longitude: <span id="longitude"></span>&deg;
-        </p>
-
-        <input type="text" id="your_mood" value="" />
-        <button id="submit_mood">Submit</button>
-    </div>
     <script>
         getData();
         async function getData() {
             const requestData = await fetch('/api');//get method request
             const dataResponse = await requestData.json();
+
+            //manipulating DOM for generating layout html
+            for (item of dataResponse) {
+                const root = document.createElement('div');
+                /* const geo = */ root.innerHTML = `<p>Latitude: ${item.lat}</br>Longitude: ${item.lon} <\p>`;
+                const mood = document.createElement('div');
+                const date = document.createElement('div');
+
+                mood.textContent = `Your Mood: ${item.mood}`
+                const dateString = new Date(item.timestamp).toLocaleString();
+                date.textContent = dateString;
+
+                /* root.appendChild(geo); */
+                root.append(mood, date);
+                document.body.append(root);
+            }
 
             console.log(dataResponse);
         }

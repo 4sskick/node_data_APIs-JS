@@ -1,4 +1,4 @@
-/* LAST POINT VIDEO TUTORIAL: https://www.youtube.com/watch?v=q-lUgFxwjEM */
+/* LAST POINT VIDEO TUTORIAL: https://www.youtube.com/watch?v=9Rhsb3GU2Iw */
 
 const server = require('express');
 const neDB = require('nedb');
@@ -19,6 +19,22 @@ app.use(server.json({
 }));
 
 //routing the request
+app.get('/api', (request, response) => {
+    database.find({}, (error, data) => {
+        if (error) {
+            response.json({
+                status: 'Server seem to find error, check again the request',
+                mood: null,
+                timestamp: null,
+                latitude: null,
+                longitude: null
+            });
+            return;
+        }
+        response.json(data);
+    });
+})
+
 app.post('/api', (request, response) => {
     console.log(request.body);
 
@@ -30,6 +46,15 @@ app.post('/api', (request, response) => {
     if (data.lat == null || data.lon == null) {
         response.json({
             status: 'Server doesn\'t get your location',
+            mood: null,
+            timestamp: timestamp,
+            latitude: null,
+            longitude: null
+        });
+    } else if (data.moodValue == '') {
+        response.json({
+            status: 'Server doesn\'t get you current mood',
+            mood: null,
             timestamp: timestamp,
             latitude: null,
             longitude: null
@@ -42,6 +67,7 @@ app.post('/api', (request, response) => {
         //and wrapped into JSON
         response.json({
             status: 'Server get your location!',
+            mood: data.moodValue,
             timestamp: timestamp,
             latitude: data.lat,
             longitude: data.lon

@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "Septian Adi Wijaya",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
     "nedb": "^1.8.0"

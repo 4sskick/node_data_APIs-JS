@@ -21,12 +21,12 @@
     <script>
         let lat, lon;
         const buttonMood = document.getElementById('submit_mood');
-        
+
         buttonMood.addEventListener('click', async event => {
-            const moodValue = document.getElementById('your_mood').value;
+            const mood = document.getElementById('your_mood').value;
 
             //starting to sent back to the server to hit API
-            let data = { lat, lon, moodValue };
+            let data = { lat, lon, mood };
             let options = {
                 method: 'POST',
                 headers: {
