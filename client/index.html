@@ -5,55 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"
+        integrity="sha256-v7VXRjLXSQU8TLVpV3hSPIARUehQ2NNQjmcU/NHmCoo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.js"
+        integrity="sha256-PPDfjhgNGqvcOaMYeomsE3Tgmh23oXG0Vg6twrbfi1E=" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <h1>Your Location</h1>
+    <a href="index.html">Main</a> | <a href="all_data.html">See All</a>
     <div id="your_location">
         <p>
             Latitude: <span id="latitude"></span>&deg;<br>
             Longitude: <span id="longitude"></span>&deg;
         </p>
 
+        <div>
+            <input type="file" name="your_selfie" accept="image/*" onchange="openFile(event)">
+            <canvas id="canvasOutput"></canvas>
+        </div>
+
         <input type="text" id="your_mood" value="" />
         <button id="submit_mood">Submit</button>
     </div>
     <script>
-        let lat, lon;
-        const buttonMood = document.getElementById('submit_mood');
 
-        buttonMood.addEventListener('click', async event => {
-            const mood = document.getElementById('your_mood').value;
+        const canvas = document.getElementById('canvasOutput');
+        const context = canvas.getContext('2d');
+        const openFile = (event) => {
 
-            //starting to sent back to the server to hit API
-            let data = { lat, lon, mood };
-            let options = {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(data)
+            const input = event.target;
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const image = new Image();
+                image.onload = () => {
+                    canvas.width = 340;
+                    canvas.height = 240;
+                    context.drawImage(image, 0, 0, image.width, image.height
+                        , 0, 0, canvas.width, canvas.height);
+                }
+                image.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        function setup() {
+            let lat, lon;
+            const buttonMood = document.getElementById('submit_mood');
+
+            buttonMood.addEventListener('click', async event => {
+                const mood = document.getElementById('your_mood').value;
+                const image64 = canvas.toDataURL();
+
+                //starting to sent back to the server to hit API
+                let data = { lat, lon, mood, image64 };
+                let options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+
+                //get the data sent by server as a Flag
+                const requestData = await fetch('/api', options);
+                const dataResponse = await requestData.json();//wrapped into JSON
+
+                console.log(dataResponse);
+            });
+
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(async position => {
+                    lat = position.coords.latitude;
+                    lon = position.coords.longitude;
+                    // lat = null;
+                    // lon = null;
+
+                    document.getElementById('latitude').textContent = lat;
+                    document.getElementById('longitude').textContent = lon;
+                });
+            } else {
+                console.log(`geolocation not available`);
             }
 
-            //get the data sent by server as a Flag
-            const requestData = await fetch('/api', options);
-            const dataResponse = await requestData.json();//wrapped into JSON
-
-            console.log(dataResponse);
-        });
-
-        if ('geolocation' in navigator) {
-            navigator.geolocation.getCurrentPosition(async position => {
-                lat = position.coords.latitude;
-                lon = position.coords.longitude;
-                // lat = null;
-                // lon = null;
-
-                document.getElementById('latitude').textContent = lat;
-                document.getElementById('longitude').textContent = lon;
-            });
-        } else {
-            console.log(`geolocation not available`);
+            noCanvas()
+            /* const video = createCapture(VIDEO) */
         }
     </script>
 </body>

@@ -25,6 +25,7 @@ app.get('/api', (request, response) => {
             response.json({
                 status: 'Server seem to find error, check again the request',
                 mood: null,
+                image64: null,
                 timestamp: null,
                 latitude: null,
                 longitude: null
@@ -47,14 +48,16 @@ app.post('/api', (request, response) => {
         response.json({
             status: 'Server doesn\'t get your location',
             mood: null,
+            image64: null,
             timestamp: timestamp,
             latitude: null,
             longitude: null
         });
-    } else if (data.moodValue == '') {
+    } else if (data.mood == '') {
         response.json({
             status: 'Server doesn\'t get you current mood',
             mood: null,
+            image64: null,
             timestamp: timestamp,
             latitude: null,
             longitude: null
@@ -67,7 +70,8 @@ app.post('/api', (request, response) => {
         //and wrapped into JSON
         response.json({
             status: 'Server get your location!',
-            mood: data.moodValue,
+            mood: data.mood,
+            image64: data.image64,
             timestamp: timestamp,
             latitude: data.lat,
             longitude: data.lon
@@ -76,5 +80,5 @@ app.post('/api', (request, response) => {
 })
 
 app.listen(3000, () => {
-    console.log(`Server is listening at port 3000`);
+    console.log(`Server is listening at port http://127.0.0.1:3000/`);
 })

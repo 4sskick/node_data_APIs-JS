@@ -9,6 +9,7 @@
 
 <body>
     <h1>Your Location</h1>
+    <a href="index.html">Main</a> | <a href="all_data.html">See All</a>
     <script>
         getData();
         async function getData() {
@@ -19,15 +20,17 @@
             for (item of dataResponse) {
                 const root = document.createElement('div');
                 /* const geo = */ root.innerHTML = `<p>Latitude: ${item.lat}</br>Longitude: ${item.lon} <\p>`;
+                const image = document.createElement('img');
                 const mood = document.createElement('div');
                 const date = document.createElement('div');
 
                 mood.textContent = `Your Mood: ${item.mood}`
                 const dateString = new Date(item.timestamp).toLocaleString();
                 date.textContent = dateString;
+                image.src = item.image64;
 
                 /* root.appendChild(geo); */
-                root.append(mood, date);
+                root.append(mood, date, image);
                 document.body.append(root);
             }
 
