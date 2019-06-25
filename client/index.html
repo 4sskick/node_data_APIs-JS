@@ -41,13 +41,8 @@
             reader.onload = (e) => {
                 const image = new Image();
                 image.onload = centerScaledImage.bind(null, image, context);
-                /* image.onload = () => {
-                    canvas.width = 340;
-                    canvas.height = 240;
-                    context.drawImage(image, 0, 0, image.width, image.height
-                        , 0, 0, canvas.width, canvas.height);
-                } */
 
+                /* https://stackoverflow.com/a/23105310 */
                 function centerScaledImage(img, context) {
                     const canvas = context.canvas;
                     const wRatio = canvas.width / img.width;
