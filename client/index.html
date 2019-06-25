@@ -40,11 +40,24 @@
 
             reader.onload = (e) => {
                 const image = new Image();
-                image.onload = () => {
+                image.onload = centerScaledImage.bind(null, image, context);
+                /* image.onload = () => {
                     canvas.width = 340;
                     canvas.height = 240;
                     context.drawImage(image, 0, 0, image.width, image.height
                         , 0, 0, canvas.width, canvas.height);
+                } */
+
+                function centerScaledImage(img, context) {
+                    const canvas = context.canvas;
+                    const wRatio = canvas.width / img.width;
+                    const hRatio = canvas.height / img.height;
+                    const ratio = Math.min(wRatio, hRatio);
+                    const centerShift_x = (canvas.width - img.width * ratio) / 2;
+                    const centerShift_y = (canvas.height - img.height * ratio) / 2;
+
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.drawImage(img, 0, 0, img.width, img.height, centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
                 }
                 image.src = e.target.result;
             };
